@@ -3,27 +3,25 @@
 \docType{data}
 \name{breach_data}
 \alias{breach_data}
-\title{Quarantine breach probability time series (Delta scenarios)}
+\title{Simulated quarantine breach time-series}
 \format{
-A tibble/data.frame with >= 2 numeric columns plus \code{scenario}.
+A tibble with columns including:
+\describe{
+\item{days_infectious_community}{numeric}
+\item{FoI_max}{numeric}
+\item{integrated_FoI}{numeric}
+\item{scenario}{character, labelled scenario name}
+\item{...}{other model fields}
+}
 }
 \source{
-Mike Lydeamore, COVIDQuarantine (quarantinemodel branch), data/penetration/.
+GitHub: MikeLydeamore/COVIDQuarantine (quarantinemodel/data/penetration)
 }
 \usage{
 breach_data
 }
 \description{
-Combined time-series from four scenarios:
-\itemize{
-\item Traveller, unvaccinated, home quarantine 7d
-\item Worker, unvaccinated, hotel quarantine 14d
-\item Traveller, AZ1 vaccinated, hotel quarantine 14d
-\item Traveller, AZ2 vaccinated, hotel quarantine 14d
-}
-}
-\details{
-Column names follow the original CSVs (e.g., time/day index and probability/hazard);
-a \code{scenario} column labels each series.
+A cleaned tibble combining four scenarios from the Science Advances
+quarantine model repository.
 }
 \keyword{datasets}

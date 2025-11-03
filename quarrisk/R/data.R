@@ -1,14 +1,16 @@
-#' Quarantine breach probability time series (Delta scenarios)
+#' Simulated quarantine breach time-series
 #'
-#' Combined time-series from four scenarios:
-#' - Traveller, unvaccinated, home quarantine 7d
-#' - Worker, unvaccinated, hotel quarantine 14d
-#' - Traveller, AZ1 vaccinated, hotel quarantine 14d
-#' - Traveller, AZ2 vaccinated, hotel quarantine 14d
+#' A cleaned tibble combining four scenarios from the Science Advances
+#' quarantine model repository.
 #'
-#' Column names follow the original CSVs (e.g., time/day index and probability/hazard);
-#' a `scenario` column labels each series.
-#'
-#' @format A tibble/data.frame with >= 2 numeric columns plus `scenario`.
-#' @source Mike Lydeamore, COVIDQuarantine (quarantinemodel branch), data/penetration/.
+#' @format A tibble with columns including:
+#' \describe{
+#'   \item{days_infectious_community}{numeric}
+#'   \item{FoI_max}{numeric}
+#'   \item{integrated_FoI}{numeric}
+#'   \item{scenario}{character, labelled scenario name}
+#'   \item{...}{other model fields}
+#' }
+#' @source GitHub: MikeLydeamore/COVIDQuarantine (quarantinemodel/data/penetration)
 "breach_data"
+

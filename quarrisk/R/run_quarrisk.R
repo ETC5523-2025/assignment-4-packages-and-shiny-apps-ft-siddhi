@@ -8,3 +8,4 @@ run_quarrisk <- function() {
   app_dir <- system.file("app", package = "quarrisk")
   shiny::runApp(app_dir, display.mode = "normal")
 }
+
