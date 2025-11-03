@@ -3,9 +3,11 @@ Title: Quarantine risk explorer (Delta)
 Version: 0.0.0.9000
 Authors@R: 
     person("Siddhi","Jadhav", email="sjad0009@student.monash.edu", role=c("aut","cre"))
-Description: Functions and a Shiny app to explore quarantine breach/outbreak
-    risk versus reproduction number (R0), vaccine efficacy, and coverage, based
-    on the analysis from Assignments 1–3.
+Description: Provides functions and an interactive Shiny dashboard to explore
+    quarantine breach and outbreak risk under different COVID-19 Delta variant
+    scenarios. Includes time-series data, visualisation functions, and a 
+    built-in Shiny app to compare integrated and maximum Force of Infection
+    across scenarios.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -13,3 +15,13 @@ RoxygenNote: 7.3.3
 Depends: 
     R (>= 3.5)
 LazyData: true
+Imports:
+    shiny,
+    ggplot2,
+    dplyr
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+
