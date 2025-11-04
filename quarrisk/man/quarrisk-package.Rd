@@ -12,6 +12,13 @@ Delta variant scenarios. It combines data, visualization, and interactivity
 to help understand how quarantine measures, vaccination, and compliance
 affect outbreak likelihood.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://ETC5523-2025.github.io/assignment-4-packages-and-shiny-apps-ft-siddhi/}
+}
+
+}
 \author{
 \strong{Maintainer}: Siddhi Jadhav \email{sjad0009@student.monash.edu}
 
