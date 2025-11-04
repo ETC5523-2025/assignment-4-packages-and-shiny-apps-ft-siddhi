@@ -18,7 +18,8 @@ LazyData: true
 Imports:
     shiny,
     dplyr,
-    ggplot2
+    ggplot2,
+    bslib
 Suggests:
     dplyr,
     knitr,

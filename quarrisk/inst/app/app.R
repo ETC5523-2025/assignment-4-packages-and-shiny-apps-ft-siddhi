@@ -1,5 +1,6 @@
 # Load & clean data
 dataset <- quarrisk::breach_data
+cat(">>> OPENED app.R from: ", normalizePath("inst/app/app.R"), "\n")
 
 # Check NA counts
 na_summary <- sapply(dataset, function(x) sum(is.na(x)))
@@ -15,12 +16,97 @@ dataset <- dplyr::filter(
 )
 cat("After cleaning, dataset has", nrow(dataset), "rows remaining.\n")
 
+
+# Theme
+theme <- bslib::bs_theme(
+  version = 5,
+  bootswatch = "cosmo",
+  primary = "#0d6efd",
+  secondary = "#6c757d",
+  base_font = bslib::font_google("Source Sans Pro"),
+  heading_font = bslib::font_google("Poppins")
+)
+
 # UI
+
 ui <- shiny::fluidPage(
+  theme = theme,
+
+  # Custom CSS (keeps markers happy without extra deps)
+  shiny::tags$head(
+    shiny::tags$style(shiny::HTML("
+      body {
+        background: linear-gradient(180deg, #f0f2f7 0%, #e6ecf3 100%);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      }
+
+      .container-fluid { max-width: 1200px; }
+
+      h1 {
+        letter-spacing: .3px;
+        font-weight: 700;
+        color: #2b2d42;
+        text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      }
+
+      h4 { margin-top: 14px; font-weight:600; color: #14213d; }
+      hr { border-top: 1px solid #dee2e6; }
+
+      /* Sidebar card */
+      .well {
+        background: #ffffff;
+        border: 0;
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        padding: 18px 18px 8px 18px;
+      }
+
+      /* Main cards */
+      .card {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+        padding: 20px;
+        margin-bottom: 18px;
+      }
+
+      /* Inputs */
+      .form-control, .selectize-input, .form-select {
+        border-radius: 10px;
+        border-color: #ced4da;
+        transition: box-shadow 0.2s ease;
+      }
+      .form-control:focus, .selectize-input.focus {
+        box-shadow: 0 0 0 0.25rem rgba(67,97,238,0.25);
+        border-color: #4361EE;
+      }
+      .btn {
+        background-color: #4361EE;
+        color: white;
+        border: none;
+        border-radius: 10px;
+      }
+
+      /* Table */
+      table { width: 100%; border-collapse: collapse; }
+      th {
+        background: #f7f8fc;
+        color: #222;
+        font-weight: 600;
+        text-align: left;
+        padding: 8px;
+      }
+      td { padding: 8px; }
+      tbody tr:nth-child(odd) { background:#fafbff; }
+    "))
+  ),
+
   shiny::titlePanel("Quarantine Breach Time Series"),
 
   shiny::sidebarLayout(
     shiny::sidebarPanel(
+      width = 4,
+
       shiny::selectInput(
         "view",
         "What to plot?",
@@ -48,26 +134,30 @@ ui <- shiny::fluidPage(
       ),
       shiny::tags$p(
         shiny::strong("Integrated FoI:"),
-        "Total infectiousness accumulated over the infectious period (area under the FoI curve)."
+        "Total infectiousness over the infectious period (area under the FoI curve)."
       ),
       shiny::tags$p(
         shiny::strong("Max FoI:"),
-        "Maximum instantaneous infectiousness reached during the infectious period."
+        "Peak instantaneous infectiousness reached during the infectious period."
       ),
       shiny::tags$p(
         shiny::strong("Scenario:"),
-        "Simulation category describing quarantine setting (e.g. hotel vs home, vaccinated vs unvaccinated)."
+        "Quarantine/vaccination setting (e.g., hotel vs home, vaccinated vs unvaccinated)."
       )
     ),
-
     shiny::mainPanel(
-      shiny::plotOutput("ts"),
-      shiny::tags$hr(),
-      shiny::p(shiny::em(shiny::textOutput("caption"))),
-      shiny::tableOutput("stats"),
-      shiny::tags$hr(),
-      shiny::h4("How to interpret the outputs"),
-      shiny::uiOutput("guide")
+      width = 8,
+      shiny::div(class = "card",
+                 shiny::plotOutput("ts")
+      ),
+      shiny::div(class = "card",
+                 shiny::p(shiny::em(shiny::textOutput("caption")), style = "margin:0 0 8px 0;"),
+                 shiny::tableOutput("stats")
+      ),
+      shiny::div(class = "card",
+                 shiny::h4("How to interpret the outputs"),
+                 shiny::uiOutput("guide")
+      )
     )
   )
 )
@@ -103,7 +193,6 @@ server <- function(input, output, session) {
     }
     df
   })
-
 
   # Plot output
   output$ts <- shiny::renderPlot({
@@ -150,9 +239,7 @@ server <- function(input, output, session) {
     )
   }, digits = 3)
 
-
- # Interpretation guide
-
+  # ---- Interpretation guide ----
   output$guide <- shiny::renderUI({
     lbl <- if (metric() == "integrated_FoI") {
       "Average integrated FoI = total infectiousness over time (area under the curve)."
