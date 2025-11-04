@@ -19,7 +19,9 @@ cat("After cleaning, dataset has", nrow(dataset), "rows remaining.\n")
 # UI
 ui <- shiny::fluidPage(
   shiny::titlePanel("Quarantine Breach Time Series"),
+
   shiny::sidebarLayout(
+    # -------- SIDEBAR --------
     shiny::sidebarPanel(
       shiny::selectInput(
         "view",
@@ -28,7 +30,9 @@ ui <- shiny::fluidPage(
                     "Max FoI"        = "FoI_max"),
         selected = "integrated_FoI"
       ),
+
       shiny::checkboxInput("facet_all", "Show all scenarios", value = TRUE),
+
       shiny::conditionalPanel(
         condition = "!input.facet_all",
         shiny::selectInput(
@@ -36,8 +40,28 @@ ui <- shiny::fluidPage(
           "Select Scenario",
           choices = sort(unique(dataset$scenario))
         )
+      ),
+
+      shiny::tags$hr(),
+      shiny::h4("Field Descriptions"),
+      shiny::tags$p(
+        shiny::strong("Days infectious in community:"),
+        "Number of days an infected traveller or worker was infectious in the community after quarantine."
+      ),
+      shiny::tags$p(
+        shiny::strong("Integrated FoI:"),
+        "Total infectiousness accumulated over the infectious period (area under the FoI curve)."
+      ),
+      shiny::tags$p(
+        shiny::strong("Max FoI:"),
+        "Maximum instantaneous infectiousness reached during the infectious period."
+      ),
+      shiny::tags$p(
+        shiny::strong("Scenario:"),
+        "Simulation category describing quarantine setting (e.g. hotel vs home, vaccinated vs unvaccinated)."
       )
     ),
+
     shiny::mainPanel(
       shiny::plotOutput("ts"),
       shiny::tags$hr(),
