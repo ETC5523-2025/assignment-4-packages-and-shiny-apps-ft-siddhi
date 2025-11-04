@@ -144,3 +144,8 @@ framework.
 `quarrisk` demonstrates how simulation data can be wrapped into a tidy,
 documented R package with a reproducible workflow and an interactive
 dashboard making epidemiological insights accessible to anyone.
+
+### Documentation website
+
+[![pkgdown
+docs](https://img.shields.io/badge/docs-pkgdown-blue.svg)](https://etc5523-2025.github.io/assignment-4-packages-and-shiny-apps-ft-siddhi/)
