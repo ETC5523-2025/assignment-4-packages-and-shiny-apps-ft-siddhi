@@ -1,4 +1,5 @@
 # UI ----
+dataset <- quarrisk::breach_data
 ui <- shiny::fluidPage(
   shiny::titlePanel("Quarantine Breach Time Series"),
   shiny::sidebarLayout(
@@ -16,7 +17,7 @@ ui <- shiny::fluidPage(
         shiny::selectInput(
           "scenario",
           "Select Scenario",
-          choices = sort(unique(quarrisk::breach_data$scenario))
+          choices = sort(unique(dataset$scenario))
         )
       )
     ),
@@ -30,7 +31,19 @@ ui <- shiny::fluidPage(
 server <- function(input, output, session) {
 
   # use packaged data with explicit namespace
-  bd <- quarrisk::breach_data
+  bd <- dataset
+
+  # Keep rows with valid values for key plotting columns
+  dataset <- dplyr::filter(
+    dataset,
+    !is.na(days_infectious_community),
+    !is.na(integrated_FoI),
+    !is.na(FoI_max),
+    !is.na(scenario)
+  )
+
+  cat("After cleaning, dataset has", nrow(dataset), "rows remaining.\n")
+
 
   daily_summary <- reactive({
     x <- bd
