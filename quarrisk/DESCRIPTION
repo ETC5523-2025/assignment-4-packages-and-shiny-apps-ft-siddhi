@@ -17,11 +17,10 @@ Depends:
 LazyData: true
 Imports:
     shiny,
-    ggplot2,
-    dplyr
+    dplyr,
+    ggplot2
 Suggests:
+    dplyr,
     knitr,
-    rmarkdown,
-    testthat (>= 3.0.0)
+    rmarkdown
 VignetteBuilder: knitr
-

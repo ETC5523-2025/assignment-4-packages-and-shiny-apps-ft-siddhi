@@ -11,6 +11,8 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>", cache = TRUE)
+
 ```
 
 # quarrisk
@@ -18,38 +20,97 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of quarrisk is to ...
+`quarrisk` is an R package that helps you understand and visualise the risk of quarantine breaches under different COVID-19 quarantine and vaccination scenarios.
+It turns simulation outputs into clear summaries and includes a simple interactive Shiny dashboard.
+
+## What this package does
+
+- Provides a built-in dataset (breach_data) that summarises simulated infection outcomes for travellers and workers.
+
+- Lets users compare breach risk across scenarios (e.g., vaccinated vs unvaccinated, home vs hotel).
+
+- Includes a Shiny app that shows interactive time-series plots.
+
+- Documents every function and dataset with roxygen2 help pages and a vignette.
 
 ## Installation
 
 You can install the development version of quarrisk from [GitHub](https://github.com/) with:
 
-``` r
+```{r install, eval=FALSE}
+# Development install (do NOT run during README knit)
 # install.packages("pak")
 pak::pak("ETC5523-2025/assignment-4-packages-and-shiny-apps-ft-siddhi")
 ```
 
-## Example
+```{r, eval=FALSE}
+install.packages("remotes")
+remotes::install_github("ETC5523-2025/assignment-4-packages-and-shiny-apps-ft-siddhi")
+```
 
-This is a basic example which shows you how to solve a common problem:
 
-```{r example}
+### Load the package and view the data
+
+```{r, load-breach-data, message=FALSE}
 library(quarrisk)
-## basic example code
+data("breach_data", package = "quarrisk")
+stopifnot(exists("breach_data"))
+# quick sanity peek
+utils::head(breach_data)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+### Make a small summary and plot
 
-```{r cars}
-summary(cars)
+```{r, plot-daily, message=FALSE, warning=FALSE, cache=TRUE}
+
+set.seed(1)
+small <- dplyr::slice_sample(breach_data, n = min(5000, nrow(breach_data)))
+
+daily <- small |>
+  dplyr::filter(!is.na(.data$integrated_FoI)) |>
+  dplyr::mutate(day = floor(.data$days_infectious_community)) |>
+  dplyr::summarise(
+    mean_integrated_FoI = mean(.data$integrated_FoI, na.rm = TRUE),
+    .by = c(scenario, day)
+  )
+
+ggplot2::ggplot(daily, ggplot2::aes(day, mean_integrated_FoI, colour = scenario)) +
+  ggplot2::geom_line(linewidth = 1) +
+  ggplot2::labs(
+    title = "Average Integrated Force of Infection by Scenario",
+    x = "Days infectious in community",
+    y = "Average integrated FoI",
+    colour = "Scenario"
+  ) +
+  ggplot2::theme_minimal()
+
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
+### Launch the interactive app
 
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
+```{r, eval=FALSE}
+quarrisk::run_quarrisk()
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+
+### Vignette
+
+For a guided explanation (background, methods, and visual interpretation):
+
+```{r, eval=FALSE}
+browseVignettes("quarrisk")
+```
+
+
+### License
+
+MIT License — see the `LICENSE` file for full text.
+
+### Source acknowledgement
+
+The dataset was derived from the open-source COVIDQuarantine modelling repository (Mike Lydeamore et al., 2021) and simplified for teaching purposes.
+All credit to the original authors for their modelling framework.
+
+### Summary
+
+`quarrisk` demonstrates how simulation data can be wrapped into a tidy, documented R package with a reproducible workflow and an interactive dashboard making epidemiological insights accessible to anyone.

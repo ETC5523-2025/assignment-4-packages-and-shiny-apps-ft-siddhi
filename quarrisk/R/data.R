@@ -1,16 +1,31 @@
 #' Simulated quarantine breach time-series
 #'
-#' A cleaned tibble combining four scenarios from the Science Advances
-#' quarantine model repository.
+#' A dataset of simulated quarantine scenarios, combining results for travellers and workers.
 #'
-#' @format A tibble with columns including:
+#' @format A data frame with ~31,000 rows and 20 variables:
 #' \describe{
-#'   \item{days_infectious_community}{numeric}
-#'   \item{FoI_max}{numeric}
-#'   \item{integrated_FoI}{numeric}
-#'   \item{scenario}{character, labelled scenario name}
-#'   \item{...}{other model fields}
+#'   \item{days_infectious_community}{Days infectious in the community.}
+#'   \item{integrated_FoI}{Total infectiousness (integrated force of infection).}
+#'   \item{FoI_max}{Maximum instantaneous infectiousness.}
+#'   \item{scenario}{Scenario label (traveller/worker, vaccine type, quarantine length).}
+#'   \item{FoI}{Instantaneous force of infection.}
+#'   \item{compliant}{Logical; whether quarantine/isolation rules were followed.}
+#'   \item{days_in_extended_quar}{Days spent in extended quarantine.}
+#'   \item{days_in_isolation}{Days in isolation.}
+#'   \item{days_in_quar}{Days in initial quarantine.}
+#'   \item{days_to_detection}{Days until detection/diagnosis.}
+#'   \item{expressed_symptoms}{Logical; whether symptoms were expressed.}
+#'   \item{index_case}{Logical; whether this row is an index case.}
+#'   \item{symptomatic}{Logical; whether the case became symptomatic.}
+#'   \item{t_incubation}{Incubation period (days).}
+#'   \item{t_latent}{Latent period (days).}
+#'   \item{t_post_incubation}{Post-incubation infectious period (days).}
+#'   \item{tested_positive}{Logical; whether a test returned positive.}
+#'   \item{time_discharged}{Time of discharge from quarantine/isolation.}
+#'   \item{time_removed}{Time removed from infectious pool (recovery/isolation).}
+#'   \item{vaccinated}{Logical; vaccination status.}
 #' }
-#' @source GitHub: MikeLydeamore/COVIDQuarantine (quarantinemodel/data/penetration)
+#'
+#' @source Adapted from Mike Lydeamore et al. (2021), *Science Advances*.
+#' @keywords datasets
 "breach_data"
-
