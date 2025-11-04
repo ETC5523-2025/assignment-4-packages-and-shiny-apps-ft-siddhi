@@ -147,5 +147,4 @@ dashboard making epidemiological insights accessible to anyone.
 
 ### Documentation website
 
-[![pkgdown
-docs](https://img.shields.io/badge/docs-pkgdown-blue.svg)](https://etc5523-2025.github.io/assignment-4-packages-and-shiny-apps-ft-siddhi/)
+<https://etc5523-2025.github.io/assignment-4-packages-and-shiny-apps-ft-siddhi/)>
