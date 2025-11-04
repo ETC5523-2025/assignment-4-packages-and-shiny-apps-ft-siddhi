@@ -13,7 +13,6 @@ dataset <- dplyr::filter(
   !is.na(FoI_max),
   !is.na(scenario)
 )
-
 cat("After cleaning, dataset has", nrow(dataset), "rows remaining.\n")
 
 # UI
@@ -21,7 +20,6 @@ ui <- shiny::fluidPage(
   shiny::titlePanel("Quarantine Breach Time Series"),
 
   shiny::sidebarLayout(
-    # -------- SIDEBAR --------
     shiny::sidebarPanel(
       shiny::selectInput(
         "view",
@@ -65,11 +63,15 @@ ui <- shiny::fluidPage(
     shiny::mainPanel(
       shiny::plotOutput("ts"),
       shiny::tags$hr(),
-      shiny::tags$p(shiny::em(shiny::textOutput("caption"))),
-      shiny::tableOutput("stats")
+      shiny::p(shiny::em(shiny::textOutput("caption"))),
+      shiny::tableOutput("stats"),
+      shiny::tags$hr(),
+      shiny::h4("How to interpret the outputs"),
+      shiny::uiOutput("guide")
     )
   )
 )
+
 
 # SERVER
 server <- function(input, output, session) {
@@ -101,6 +103,7 @@ server <- function(input, output, session) {
     }
     df
   })
+
 
   # Plot output
   output$ts <- shiny::renderPlot({
@@ -146,6 +149,39 @@ server <- function(input, output, session) {
       check.names = FALSE
     )
   }, digits = 3)
+
+
+ # Interpretation guide
+
+  output$guide <- shiny::renderUI({
+    lbl <- if (metric() == "integrated_FoI") {
+      "Average integrated FoI = total infectiousness over time (area under the curve)."
+    } else {
+      "Average maximum FoI = peak instantaneous infectiousness (height of the highest spike)."
+    }
+
+    bullets <- if (isTRUE(input$facet_all)) {
+      c(
+        "Each panel is a different scenario; compare heights and shapes across panels.",
+        "Higher lines mean higher average risk on that day.",
+        "The highest point marks the day of greatest average risk.",
+        "Flat or near-zero segments indicate little/no community infectiousness."
+      )
+    } else {
+      c(
+        paste0("Scenario: ", input$scenario, "."),
+        "Look for the highest point → day of greatest average risk.",
+        "Earlier, narrow peaks = short, sharp risk window; wider curves = prolonged risk window.",
+        "Switch “What to plot?” to compare total risk (Integrated FoI) vs peak risk (Max FoI)."
+      )
+    }
+
+    html <- paste0(
+      "<p><b>", lbl, "</b></p>",
+      "<ul><li>", paste(bullets, collapse = "</li><li>"), "</li></ul>"
+    )
+    HTML(html)
+  })
 }
 
 # APP
