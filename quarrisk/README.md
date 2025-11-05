@@ -3,13 +3,20 @@
 
 # quarrisk
 
-<!-- badges: start -->
-<!-- badges: end -->
+**Explore quarantine breach risk interactively**
 
-`quarrisk` is an R package that helps you understand and visualise the
-risk of quarantine breaches under different COVID-19 quarantine and
-vaccination scenarios. It turns simulation outputs into clear summaries
-and includes a simple interactive Shiny dashboard.
+`quarrisk` is an R package that helps users understand and visualise the
+risk of COVID-19 quarantine breaches under different vaccination and
+isolation scenarios.  
+It includes:
+
+- a built-in dataset of simulated infection outcomes for travellers and
+  workers
+
+- tidy helper functions to summarise daily infection risk
+
+- an interactive Shiny dashboard for visual exploration and comparison
+  between scenarios.
 
 ## What this package does
 
@@ -147,4 +154,4 @@ dashboard making epidemiological insights accessible to anyone.
 
 ### Documentation website
 
-<https://etc5523-2025.github.io/assignment-4-packages-and-shiny-apps-ft-siddhi/)>
+<https://etc5523-2025.github.io/assignment-4-packages-and-shiny-apps-ft-siddhi/>

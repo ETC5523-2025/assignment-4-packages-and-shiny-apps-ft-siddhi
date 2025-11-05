@@ -2,7 +2,3 @@ url: ~
 template:
   bootstrap: 5
 
-articles:
-  - title: "Package overview"
-    contents:
-      - quarrisk-overview
