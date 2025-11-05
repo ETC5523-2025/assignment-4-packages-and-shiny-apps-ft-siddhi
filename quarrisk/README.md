@@ -155,3 +155,7 @@ dashboard making epidemiological insights accessible to anyone.
 ### Documentation website
 
 <https://etc5523-2025.github.io/assignment-4-packages-and-shiny-apps-ft-siddhi/>
+
+### AI Acknowlegment
+
+<https://chatgpt.com/share/690b24a3-c5f4-8005-b61b-13d1eb70b3b6>
